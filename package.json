@@ -1,0 +1,93 @@
+{
+  "name": "pocketcrud",
+  "version": "0.1.0",
+  "description": "A lightweight, framework-agnostic library for simplified PocketBase CRUD operations with ready-to-use UI components",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackkeller/pocketcrud.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./components": {
+      "default": "./src/components/svelte/index.js"
+    },
+    "./components/auth": {
+      "default": "./src/components/svelte/Auth/index.js"
+    },
+    "./components/collections": {
+      "default": "./src/components/svelte/Collections/index.js"
+    },
+    "./components/records": {
+      "default": "./src/components/svelte/Records/index.js"
+    },
+    "./styles": {
+      "default": "./src/components/svelte/pocketcrud.css"
+    }
+  },
+  "scripts": {
+    "build": "echo 'No build needed - using JS directly'",
+    "dev": "echo 'No dev build needed - using JS directly'",
+    "lint": "bunx eslint src --ext .js --ignore-pattern '*.d.ts'",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish",
+    "yalc:publish": "yalc publish --push"
+  },
+  "keywords": [
+    "pocketbase",
+    "crud",
+    "svelte",
+    "components",
+    "database",
+    "cms"
+  ],
+  "author": "Jack Keller",
+  "license": "MIT",
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "pocketbase": "^0.21.0"
+  },
+  "peerDependencies": {
+    "svelte": "^4.0.0 || ^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "svelte": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.6",
+    "@eslint/js": "^9.34.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "@vitest/ui": "^1.0.0",
+    "eslint": "^9.34.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "yalc": "^1.0.0-pre.53"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "private": false
+}
