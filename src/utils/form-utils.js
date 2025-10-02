@@ -40,7 +40,7 @@ export function getFormFieldConfig(field, overrides) {
     type: 'text',
     required: field.required,
     placeholder: `Enter ${field.name}`,
-    value: ''
+    value: '',
   };
 
   // Configure input type based on field type
@@ -131,8 +131,8 @@ export function getFormFieldConfig(field, overrides) {
  */
 export function getFormFields(schema, overrides) {
   return schema
-    .map((field) => getFormFieldConfig(field, overrides))
-    .filter((config) => config !== null);
+    .map(field => getFormFieldConfig(field, overrides))
+    .filter(config => config !== null);
 }
 
 /**

@@ -5,7 +5,7 @@ import {
   validateFormData,
   prepareFormData,
   formatDateForInput,
-  formatDateForDisplay
+  formatDateForDisplay,
 } from './form-utils.js';
 
 describe('form-utils', () => {
@@ -18,7 +18,7 @@ describe('form-utils', () => {
         type: 'date',
         system: true,
         required: false,
-        presentable: false
+        presentable: false,
       };
 
       expect(getFormFieldConfig(systemField)).toBeNull();
@@ -32,7 +32,7 @@ describe('form-utils', () => {
         type: 'text',
         system: true,
         required: true,
-        presentable: false
+        presentable: false,
       };
 
       const config = getFormFieldConfig(idField);
@@ -40,7 +40,7 @@ describe('form-utils', () => {
         name: 'id',
         type: 'text',
         required: false,
-        label: 'ID'
+        label: 'ID',
       });
     });
 
@@ -53,7 +53,7 @@ describe('form-utils', () => {
         system: false,
         required: true,
         presentable: true,
-        options: { pattern: '^[A-Z]' }
+        options: { pattern: '^[A-Z]' },
       };
 
       const config = getFormFieldConfig(textField);
@@ -62,7 +62,7 @@ describe('form-utils', () => {
         type: 'text',
         required: true,
         label: 'Title',
-        pattern: '^[A-Z]'
+        pattern: '^[A-Z]',
       });
     });
 
@@ -75,7 +75,7 @@ describe('form-utils', () => {
         system: false,
         required: true,
         presentable: true,
-        options: { min: 0, max: 120 }
+        options: { min: 0, max: 120 },
       };
 
       const config = getFormFieldConfig(numberField);
@@ -85,7 +85,7 @@ describe('form-utils', () => {
         required: true,
         label: 'Age',
         min: 0,
-        max: 120
+        max: 120,
       });
     });
 
@@ -97,7 +97,7 @@ describe('form-utils', () => {
         type: 'bool',
         system: false,
         required: false,
-        presentable: true
+        presentable: true,
       };
 
       const config = getFormFieldConfig(boolField);
@@ -105,7 +105,7 @@ describe('form-utils', () => {
         name: 'active',
         type: 'checkbox',
         required: false,
-        label: 'Active'
+        label: 'Active',
       });
     });
 
@@ -120,8 +120,8 @@ describe('form-utils', () => {
         presentable: true,
         options: {
           values: ['tech', 'design', 'business'],
-          maxSelect: 1
-        }
+          maxSelect: 1,
+        },
       };
 
       const config = getFormFieldConfig(selectField);
@@ -131,7 +131,7 @@ describe('form-utils', () => {
         required: true,
         label: 'Category',
         options: ['tech', 'design', 'business'],
-        multiple: false
+        multiple: false,
       });
     });
 
@@ -146,8 +146,8 @@ describe('form-utils', () => {
         presentable: true,
         options: {
           values: ['red', 'blue', 'green'],
-          maxSelect: 3
-        }
+          maxSelect: 3,
+        },
       };
 
       const config = getFormFieldConfig(multiSelectField);
@@ -157,7 +157,7 @@ describe('form-utils', () => {
         required: false,
         label: 'Tags',
         options: ['red', 'blue', 'green'],
-        multiple: true
+        multiple: true,
       });
     });
 
@@ -169,7 +169,7 @@ describe('form-utils', () => {
         type: 'editor',
         system: false,
         required: true,
-        presentable: true
+        presentable: true,
       };
 
       const config = getFormFieldConfig(editorField);
@@ -178,7 +178,7 @@ describe('form-utils', () => {
         type: 'textarea',
         required: true,
         label: 'Content',
-        rows: 8
+        rows: 8,
       });
     });
 
@@ -190,7 +190,7 @@ describe('form-utils', () => {
         type: 'json',
         system: false,
         required: false,
-        presentable: true
+        presentable: true,
       };
 
       const config = getFormFieldConfig(jsonField);
@@ -200,7 +200,7 @@ describe('form-utils', () => {
         required: false,
         label: 'Metadata',
         rows: 4,
-        placeholder: 'Enter JSON data'
+        placeholder: 'Enter JSON data',
       });
     });
   });
@@ -215,7 +215,7 @@ describe('form-utils', () => {
           type: 'text',
           system: true,
           required: true,
-          presentable: false
+          presentable: false,
         },
         {
           id: 'created',
@@ -223,7 +223,7 @@ describe('form-utils', () => {
           type: 'date',
           system: true,
           required: true,
-          presentable: false
+          presentable: false,
         },
         {
           id: 'f1',
@@ -231,8 +231,8 @@ describe('form-utils', () => {
           type: 'text',
           system: false,
           required: true,
-          presentable: true
-        }
+          presentable: true,
+        },
       ];
 
       const formFields = getFormFields(schema);
@@ -251,7 +251,7 @@ describe('form-utils', () => {
         type: 'email',
         system: false,
         required: true,
-        presentable: true
+        presentable: true,
       },
       {
         id: 'f2',
@@ -260,7 +260,7 @@ describe('form-utils', () => {
         system: false,
         required: false,
         presentable: true,
-        options: { min: 0, max: 120 }
+        options: { min: 0, max: 120 },
       },
       {
         id: 'f3',
@@ -268,8 +268,8 @@ describe('form-utils', () => {
         type: 'url',
         system: false,
         required: false,
-        presentable: true
-      }
+        presentable: true,
+      },
     ];
 
     it('should return errors for required fields', () => {
@@ -304,7 +304,7 @@ describe('form-utils', () => {
       const data = {
         email: 'test@example.com',
         age: 25,
-        website: 'https://example.com'
+        website: 'https://example.com',
       };
       const errors = validateFormData(data, schema);
       expect(errors).toHaveLength(0);
@@ -320,7 +320,7 @@ describe('form-utils', () => {
         type: 'text',
         system: true,
         required: true,
-        presentable: false
+        presentable: false,
       },
       {
         id: 'f1',
@@ -328,7 +328,7 @@ describe('form-utils', () => {
         type: 'number',
         system: false,
         required: false,
-        presentable: true
+        presentable: true,
       },
       {
         id: 'f1b',
@@ -336,7 +336,7 @@ describe('form-utils', () => {
         type: 'number',
         system: false,
         required: false,
-        presentable: true
+        presentable: true,
       },
       {
         id: 'f2',
@@ -344,7 +344,7 @@ describe('form-utils', () => {
         type: 'bool',
         system: false,
         required: false,
-        presentable: true
+        presentable: true,
       },
       {
         id: 'f3',
@@ -352,7 +352,7 @@ describe('form-utils', () => {
         type: 'json',
         system: false,
         required: false,
-        presentable: true
+        presentable: true,
       },
       {
         id: 'f4',
@@ -361,7 +361,7 @@ describe('form-utils', () => {
         system: false,
         required: false,
         presentable: true,
-        options: { maxSelect: 3 }
+        options: { maxSelect: 3 },
       },
       {
         id: 'f5',
@@ -370,8 +370,8 @@ describe('form-utils', () => {
         system: false,
         required: false,
         presentable: true,
-        options: { maxSelect: 1 }
-      }
+        options: { maxSelect: 1 },
+      },
     ];
 
     it('should skip undefined and null values', () => {
@@ -403,8 +403,8 @@ describe('form-utils', () => {
           type: 'number',
           system: false,
           required: true,
-          presentable: true
-        }
+          presentable: true,
+        },
       ];
 
       const data = { requiredAge: '' };

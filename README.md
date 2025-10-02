@@ -33,7 +33,7 @@ import PocketCrud from 'pocketcrud';
 
 // Initialize with your PocketBase URL
 const crud = new PocketCrud({
-  url: 'http://127.0.0.1:8090'
+  url: 'http://127.0.0.1:8090',
 });
 
 // Get all collections and their schemas
@@ -47,16 +47,16 @@ console.log(userSchema);
 // Perform CRUD operations
 const newUser = await crud.create('users', {
   email: 'john@example.com',
-  name: 'John Doe'
+  name: 'John Doe',
 });
 
 const users = await crud.getList('users', {
   filter: 'verified = true',
-  sort: '-created'
+  sort: '-created',
 });
 
 await crud.update('users', newUser.id, {
-  name: 'John Smith'
+  name: 'John Smith',
 });
 
 await crud.delete('users', newUser.id);
@@ -171,13 +171,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
   }
 </script>
 
-<LoginForm
-  bind:email
-  bind:password
-  bind:isLoading
-  bind:error
-  on:submit={handleLogin}
-/>
+<LoginForm bind:email bind:password bind:isLoading bind:error on:submit="{handleLogin}" />
 ```
 
 ### SetupForm Component
@@ -233,7 +227,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
   bind:isLoading
   bind:error
   bind:success
-  on:submit={handleSetup}
+  on:submit="{handleSetup}"
 />
 ```
 
@@ -251,20 +245,14 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
   // Optional: Configure field overrides for specific collections
   const fieldOverrides = {
     body: { type: 'textarea', rows: 8 },
-    content: { type: 'textarea', rows: 6 }
+    content: { type: 'textarea', rows: 6 },
   };
 
   // Optional: Specify primary display field
   const primaryDisplayField = 'title';
 </script>
 
-<CollectionManager
-  {crud}
-  {collectionName}
-  {fieldOverrides}
-  {primaryDisplayField}
-  perPage={20}
-/>
+<CollectionManager {crud} {collectionName} {fieldOverrides} {primaryDisplayField} perPage="{20}" />
 ```
 
 ### RecordList Component
@@ -308,9 +296,9 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
   {totalItems}
   {perPage}
   primaryDisplayField="title"
-  on:edit={handleEdit}
-  on:delete={handleDelete}
-  on:pageChange={handlePageChange}
+  on:edit="{handleEdit}"
+  on:delete="{handleDelete}"
+  on:pageChange="{handlePageChange}"
 />
 ```
 
@@ -324,7 +312,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
   export let initialData = null;
 
   const fieldOverrides = {
-    body: { type: 'textarea', rows: 8 }
+    body: { type: 'textarea', rows: 8 },
   };
 
   function handleSubmit(event) {
@@ -342,8 +330,8 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
   {schema}
   {initialData}
   {fieldOverrides}
-  on:submit={handleSubmit}
-  on:cancel={handleCancel}
+  on:submit="{handleSubmit}"
+  on:cancel="{handleCancel}"
 />
 ```
 
@@ -352,22 +340,20 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
 All components support slots for customization:
 
 ```html
-<LoginForm on:submit={handleLogin}>
+<LoginForm on:submit="{handleLogin}">
   <div slot="email-input">
     <!-- Custom email input using your UI library -->
-    <Input type="email" bind:value={email} label="Email" />
+    <input type="email" bind:value="{email}" label="Email" />
   </div>
 
   <div slot="password-input">
     <!-- Custom password input -->
-    <Input type="password" bind:value={password} label="Password" />
+    <input type="password" bind:value="{password}" label="Password" />
   </div>
 
   <div slot="submit-button">
     <!-- Custom button -->
-    <Button type="submit" disabled={isLoading}>
-      {isLoading ? 'Logging in...' : 'Login'}
-    </Button>
+    <button type="submit" disabled="{isLoading}">{isLoading ? 'Logging in...' : 'Login'}</button>
   </div>
 </LoginForm>
 ```
@@ -381,25 +367,25 @@ For better organization, create a `pocketcrud.config.js` file in your admin rout
 export const fieldOverrides = {
   posts: {
     body: { type: 'textarea', rows: 8 },
-    content: { type: 'textarea', rows: 6 }
+    content: { type: 'textarea', rows: 6 },
   },
   snippets: {
     body: { type: 'textarea', rows: 10 },
-    description: { type: 'textarea', rows: 3 }
-  }
+    description: { type: 'textarea', rows: 3 },
+  },
 };
 
 export const primaryDisplayFields = {
   posts: 'title',
   snippets: 'title',
   comments: 'comment',
-  categories: 'name'
+  categories: 'name',
 };
 
 export const suppressedCollections = ['users'];
 
 export const pocketbase = {
-  url: 'https://your-app.pockethost.io/'
+  url: 'https://your-app.pockethost.io/',
 };
 
 export function getFieldOverrides(collectionName) {
@@ -426,9 +412,9 @@ Then use in your components:
 <CollectionManager
   {crud}
   {collectionName}
-  fieldOverrides={getFieldOverrides(collectionName)}
-  primaryDisplayField={getPrimaryDisplayField(collectionName)}
-  perPage={20}
+  fieldOverrides="{getFieldOverrides(collectionName)}"
+  primaryDisplayField="{getPrimaryDisplayField(collectionName)}"
+  perPage="{20}"
 />
 ```
 
@@ -697,7 +683,7 @@ This package provides everything you need to build a complete admin interface:
 
 ## Contributing
 
-1. Clone the repo: `git clone <repo-url>`
+1. Clone the repo: `git clone https://github.com/jackkeller/pocketcrud.git`
 2. Install dependencies: `bun install`
 3. Run tests: `bun run test`
 4. Make your changes

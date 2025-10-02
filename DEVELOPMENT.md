@@ -19,6 +19,7 @@ yalc add pocketcrud
 ```
 
 This creates:
+
 - `.yalc/pocketcrud/` - local copy of the package
 - `yalc.lock` - tracks yalc dependencies
 - Updates package.json with `"pocketcrud": "file:.yalc/pocketcrud"`
@@ -29,6 +30,7 @@ This creates:
 1. Make your changes to the pocketcrud source code
 
 2. Push updated version to all linked projects:
+
    ```bash
    cd ~/dev/pocketcrud
    yalc push
@@ -44,6 +46,7 @@ This creates:
 ### Alternative: Manual Update
 
 If you published without `push`:
+
 ```bash
 cd ~/path/to/your-app
 yalc update pocketcrud
@@ -58,6 +61,7 @@ bun install pocketcrud
 ```
 
 This will:
+
 - Remove `.yalc/pocketcrud/` directory
 - Update package.json to use npm version
 - Remove yalc.lock if no other yalc dependencies
@@ -74,18 +78,22 @@ bun run changeset
 ```
 
 Follow the prompts:
+
 - Select change type: `patch` (bug fixes), `minor` (new features), or `major` (breaking changes)
 - Describe your changes
 
 ### Versioning and Publishing
 
 1. **Create version bump**:
+
    ```bash
    bun run version
    ```
+
    This updates package.json and CHANGELOG.md
 
 2. **Commit the changes**:
+
    ```bash
    git add .
    git commit -m "Version bump"
