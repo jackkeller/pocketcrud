@@ -5,15 +5,15 @@ import { PocketCrud } from './crud.js';
 const mockPocketBase = {
   collections: {
     getFullList: vi.fn(),
-    getOne: vi.fn()
+    getOne: vi.fn(),
   },
   collection: vi.fn(),
   baseUrl: 'http://localhost:8090',
-  authStore: {}
+  authStore: {},
 };
 
 vi.mock('pocketbase', () => ({
-  default: vi.fn(() => mockPocketBase)
+  default: vi.fn(() => mockPocketBase),
 }));
 
 describe('PocketCrud', () => {
@@ -35,7 +35,7 @@ describe('PocketCrud', () => {
       const customAuthStore = { token: 'test' };
       const crudWithAuth = new PocketCrud({
         url: 'http://localhost:8090',
-        authStore: customAuthStore
+        authStore: customAuthStore,
       });
       expect(crudWithAuth.client.authStore).toBe(customAuthStore);
     });
@@ -58,8 +58,8 @@ describe('PocketCrud', () => {
               required: true,
               presentable: true,
               unique: true,
-              options: {}
-            }
+              options: {},
+            },
           ],
           indexes: [],
           listRule: null,
@@ -67,8 +67,8 @@ describe('PocketCrud', () => {
           createRule: null,
           updateRule: null,
           deleteRule: null,
-          options: {}
-        }
+          options: {},
+        },
       ];
 
       mockPocketBase.collections.getFullList.mockResolvedValue(mockCollections);
@@ -90,9 +90,9 @@ describe('PocketCrud', () => {
             required: true,
             presentable: true,
             unique: true,
-            options: {}
-          }
-        ]
+            options: {},
+          },
+        ],
       });
     });
   });
@@ -113,8 +113,8 @@ describe('PocketCrud', () => {
             required: true,
             presentable: true,
             unique: true,
-            options: {}
-          }
+            options: {},
+          },
         ],
         indexes: [],
         listRule: null,
@@ -122,7 +122,7 @@ describe('PocketCrud', () => {
         createRule: null,
         updateRule: null,
         deleteRule: null,
-        options: {}
+        options: {},
       };
 
       mockPocketBase.collections.getOne.mockResolvedValue(mockCollection);
@@ -151,7 +151,7 @@ describe('PocketCrud', () => {
             required: true,
             presentable: true,
             unique: true,
-            options: {}
+            options: {},
           },
           {
             id: 'field2',
@@ -161,8 +161,8 @@ describe('PocketCrud', () => {
             required: false,
             presentable: true,
             unique: false,
-            options: {}
-          }
+            options: {},
+          },
         ],
         indexes: [],
         listRule: null,
@@ -170,7 +170,7 @@ describe('PocketCrud', () => {
         createRule: null,
         updateRule: null,
         deleteRule: null,
-        options: {}
+        options: {},
       };
 
       mockPocketBase.collections.getOne.mockResolvedValue(mockCollection);
@@ -191,7 +191,7 @@ describe('PocketCrud', () => {
         getList: vi.fn(),
         getFullList: vi.fn(),
         update: vi.fn(),
-        delete: vi.fn()
+        delete: vi.fn(),
       };
       mockPocketBase.collection.mockReturnValue(mockCollection);
     });
@@ -241,7 +241,7 @@ describe('PocketCrud', () => {
           perPage: 30,
           totalItems: 100,
           totalPages: 4,
-          items: [{ id: '1', name: 'User 1' }]
+          items: [{ id: '1', name: 'User 1' }],
         };
         const mockCollection = mockPocketBase.collection();
         mockCollection.getList.mockResolvedValue(mockResult);
@@ -260,12 +260,12 @@ describe('PocketCrud', () => {
           page: 2,
           perPage: 50,
           filter: 'name != ""',
-          sort: '-created'
+          sort: '-created',
         });
 
         expect(mockCollection.getList).toHaveBeenCalledWith(2, 50, {
           filter: 'name != ""',
-          sort: '-created'
+          sort: '-created',
         });
       });
     });

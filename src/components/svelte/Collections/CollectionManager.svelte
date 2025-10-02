@@ -1,7 +1,7 @@
 <script>
-  import DynamicForm from '../Records/DynamicForm.svelte';
-  import RecordList from '../Records/RecordList.svelte';
-  import '../pocketcrud.css';
+  import DynamicForm from "../Records/DynamicForm.svelte";
+  import RecordList from "../Records/RecordList.svelte";
+  import "../pocketcrud.css";
 
   /** @type {import('pocketcrud').default} */
   export let crud;
@@ -22,7 +22,7 @@
   /** @type {boolean} */
   let loading = true;
   /** @type {string} */
-  let error = '';
+  let error = "";
   /** @type {boolean} */
   let showForm = false;
   /** @type {Record<string, any> | null} */
@@ -40,7 +40,7 @@
 
   async function loadCollection() {
     loading = true;
-    error = '';
+    error = "";
     showForm = false;
     editingRecord = null;
 
@@ -48,7 +48,7 @@
       schema = await crud.getCollectionSchema(collectionName);
       await loadRecords();
     } catch (err) {
-      error = err instanceof Error ? err.message : 'Failed to load collection';
+      error = err instanceof Error ? err.message : "Failed to load collection";
     } finally {
       loading = false;
     }
@@ -62,14 +62,14 @@
       const result = await crud.getList(collectionName, {
         page,
         perPage,
-        sort: '-created'
+        sort: "-created",
       });
       records = result.items;
       currentPage = result.page;
       totalPages = result.totalPages;
       totalItems = result.totalItems;
     } catch (err) {
-      error = err instanceof Error ? err.message : 'Failed to load records';
+      error = err instanceof Error ? err.message : "Failed to load records";
     }
   }
 
@@ -90,7 +90,9 @@
    * @param {{id: string, created: string, updated: string, [key: string]: any}} record
    */
   async function handleDelete(record) {
-    if (!confirm(`Are you sure you want to delete this ${collectionName} record?`)) {
+    if (
+      !confirm(`Are you sure you want to delete this ${collectionName} record?`)
+    ) {
       return;
     }
 
@@ -98,7 +100,7 @@
       await crud.delete(collectionName, record.id);
       await loadRecords(currentPage);
     } catch (err) {
-      error = err instanceof Error ? err.message : 'Failed to delete record';
+      error = err instanceof Error ? err.message : "Failed to delete record";
     }
   }
 
@@ -107,7 +109,11 @@
    */
   async function handleFormSubmit(formData) {
     try {
-      console.log('Submitting form data for collection:', collectionName, formData);
+      console.log(
+        "Submitting form data for collection:",
+        collectionName,
+        formData
+      );
 
       if (editingRecord) {
         await crud.update(collectionName, editingRecord.id, formData);
@@ -119,8 +125,8 @@
       editingRecord = null;
       await loadRecords(currentPage);
     } catch (err) {
-      console.error('Form submission error:', err);
-      error = err instanceof Error ? err.message : 'Failed to save record';
+      console.error("Form submission error:", err);
+      error = err instanceof Error ? err.message : "Failed to save record";
     }
   }
 
@@ -141,7 +147,9 @@
   {#if loading}
     <slot name="loading">
       <div class="flex justify-center py-8">
-        <div class="h-6 w-6 animate-spin rounded-full border-b-2 border-gray-900"></div>
+        <div
+          class="h-6 w-6 animate-spin rounded-full border-b-2 border-gray-900"
+        ></div>
       </div>
     </slot>
   {:else if error}
@@ -152,7 +160,7 @@
     </slot>
   {:else}
     <div data-testid="collection-manager">
-      <div class="mb-6 flex items-center justify-end">
+      <div class="mb-6 flex items-center justify-start">
         {#if !showForm}
           <slot name="create-button" {handleCreateNew}>
             <button
@@ -168,10 +176,17 @@
       </div>
 
       {#if showForm}
-        <slot name="form" {schema} {fieldOverrides} {editingRecord} {handleFormSubmit} {handleFormCancel}>
+        <slot
+          name="form"
+          {schema}
+          {fieldOverrides}
+          {editingRecord}
+          {handleFormSubmit}
+          {handleFormCancel}
+        >
           <div class="pocketcrud-card mb-6">
             <h3 class="mb-4 text-lg font-semibold">
-              {editingRecord ? 'Edit' : 'Create'}
+              {editingRecord ? "Edit" : "Create"}
               {collectionName}
             </h3>
             <DynamicForm

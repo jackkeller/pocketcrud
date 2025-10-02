@@ -136,12 +136,12 @@ export class PocketCrud {
     try {
       // Try admin method first
       const collections = await this.pb.collections.getFullList();
-      return collections.map((col) => ({
+      return collections.map(col => ({
         id: col.id,
         name: col.name,
         type: /** @type {'base' | 'auth' | 'view'} */ (col.type),
         system: col.system,
-        schema: (col.schema || []).map((field) => ({
+        schema: (col.schema || []).map(field => ({
           id: field.id,
           name: field.name,
           type: field.type,
@@ -149,7 +149,7 @@ export class PocketCrud {
           required: field.required,
           presentable: field.presentable,
           unique: field.unique || false,
-          options: field.options
+          options: field.options,
         })),
         indexes: col.indexes || [],
         listRule: col.listRule,
@@ -157,7 +157,7 @@ export class PocketCrud {
         createRule: col.createRule,
         updateRule: col.updateRule,
         deleteRule: col.deleteRule,
-        options: col.options
+        options: col.options,
       }));
     } catch {
       // If admin method fails, fallback to discovering accessible collections
@@ -177,7 +177,7 @@ export class PocketCrud {
       'categories',
       'pages',
       'media',
-      'settings'
+      'settings',
     ];
     /** @type {CollectionSchema[]} */
     const accessibleCollections = [];
@@ -195,7 +195,7 @@ export class PocketCrud {
             name: collection.name,
             type: /** @type {'base' | 'auth' | 'view'} */ (collection.type),
             system: collection.system || false,
-            schema: (collection.schema || []).map((field) => ({
+            schema: (collection.schema || []).map(field => ({
               id: field.id,
               name: field.name,
               type: field.type,
@@ -203,7 +203,7 @@ export class PocketCrud {
               required: field.required,
               presentable: field.presentable,
               unique: field.unique || false,
-              options: field.options
+              options: field.options,
             })),
             indexes: collection.indexes || [],
             listRule: collection.listRule,
@@ -211,7 +211,7 @@ export class PocketCrud {
             createRule: collection.createRule,
             updateRule: collection.updateRule,
             deleteRule: collection.deleteRule,
-            options: collection.options
+            options: collection.options,
           });
         } catch {
           // If we can't get schema, create a basic collection entry
@@ -227,7 +227,7 @@ export class PocketCrud {
             createRule: null,
             updateRule: null,
             deleteRule: null,
-            options: null
+            options: null,
           });
         }
       } catch {
@@ -250,7 +250,7 @@ export class PocketCrud {
       name: collection.name,
       type: /** @type {'base' | 'auth' | 'view'} */ (collection.type),
       system: collection.system,
-      schema: (collection.schema || []).map((field) => ({
+      schema: (collection.schema || []).map(field => ({
         id: field.id,
         name: field.name,
         type: field.type,
@@ -258,7 +258,7 @@ export class PocketCrud {
         required: field.required,
         presentable: field.presentable,
         unique: field.unique,
-        options: field.options
+        options: field.options,
       })),
       indexes: collection.indexes || [],
       listRule: collection.listRule,
@@ -266,7 +266,7 @@ export class PocketCrud {
       createRule: collection.createRule,
       updateRule: collection.updateRule,
       deleteRule: collection.deleteRule,
-      options: collection.options
+      options: collection.options,
     };
   }
 
@@ -288,7 +288,7 @@ export class PocketCrud {
     return this.pb.admins.create({
       email,
       password,
-      passwordConfirm: password
+      passwordConfirm: password,
     });
   }
 

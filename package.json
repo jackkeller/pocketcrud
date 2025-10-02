@@ -38,7 +38,10 @@
   "scripts": {
     "build": "echo 'No build needed - using JS directly'",
     "dev": "echo 'No dev build needed - using JS directly'",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "bunx eslint src --ext .js --ignore-pattern '*.d.ts'",
+    "lint:fix": "bunx eslint src --ext .js --ignore-pattern '*.d.ts' --fix",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
