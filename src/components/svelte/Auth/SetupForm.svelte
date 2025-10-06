@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import '../pocketcrud.css';
+  import '../../styles/pocketcrud.css';
 
   /** @type {string} */
   export let email = '';

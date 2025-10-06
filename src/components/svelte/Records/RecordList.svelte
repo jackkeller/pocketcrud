@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { formatDateForDisplay } from "../../../utils/form-utils.js";
-  import "../pocketcrud.css";
+  import "../../styles/pocketcrud.css";
 
   /** @type {Array<Record<string, any>>} */
   export let records;

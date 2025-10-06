@@ -1,20 +1,23 @@
 # PocketCrud
 
-A dynamic PocketBase CRUD system with full schema introspection, form generation, and reusable Svelte components for rapid admin interface development.
+A dynamic PocketBase CRUD system with full schema introspection, form generation, and reusable UI components for rapid admin interface development. Works with **Svelte** and **React**.
 
 ## Features
 
 - 🔍 **Schema Introspection** - Automatically discover collection schemas and field types
 - 📝 **Dynamic Form Generation** - Create forms automatically based on PocketBase field definitions
 - 🎛️ **Complete CRUD Operations** - Create, Read, Update, Delete records with full type safety
-- 🎨 **Reusable Svelte Components** - Standalone components with slots and event dispatchers
+- 🎨 **Multi-Framework Components** - Full component libraries for both **Svelte** and **React**
 - ⚙️ **Config-Driven** - Customize behavior via props, not hard-coded logic
 - ✅ **Form Validation** - Client-side validation based on schema constraints
 - 📱 **Responsive Design** - Mobile-friendly admin interfaces
 - 🧪 **Well Tested** - Comprehensive unit tests
-- 🎯 **Framework Agnostic** - Use utilities standalone or with components
+- 🎯 **Framework Agnostic Core** - Use utilities standalone in any JavaScript project
+- 📘 **TypeScript Support** - Full type definitions for React components and utilities
 
 ## Installation
+
+### For Svelte/SvelteKit
 
 ```bash
 npm install pocketcrud pocketbase svelte
@@ -22,7 +25,15 @@ npm install pocketcrud pocketbase svelte
 bun add pocketcrud pocketbase svelte
 ```
 
-**Note:** Svelte is a peer dependency when using components.
+### For React/Next.js
+
+```bash
+npm install pocketcrud pocketbase react react-dom
+# or
+bun add pocketcrud pocketbase react react-dom
+```
+
+**Note:** Framework dependencies (Svelte or React) are peer dependencies - install only what you need.
 
 ## Quick Start
 
@@ -126,25 +137,55 @@ const preparedData = prepareFormData(formData, schema);
 
 ## Component Usage
 
-The package provides reusable Svelte components that can be imported into any SvelteKit application.
+PocketCrud provides complete component libraries for both **Svelte** and **React** with identical functionality.
 
-### Available Components
+### Choosing Your Framework
+
+| Framework | Import Path | Use Cases |
+|-----------|-------------|-----------|
+| **Svelte** | `pocketcrud/svelte` | SvelteKit, Svelte apps |
+| **React** | `pocketcrud/react` | Next.js, Create React App, any React project |
+| **Utilities** | `pocketcrud` | Framework-agnostic CRUD utilities |
+
+### Available Components (Both Frameworks)
+
+All five core components are available in both libraries:
+
+| Component | Purpose | Features |
+|-----------|---------|----------|
+| **LoginForm** | User authentication | Email/password, loading states, error handling |
+| **SetupForm** | Admin creation | Password confirmation, validation, success states |
+| **DynamicForm** | Schema-driven forms | Auto-generated fields, validation, all field types |
+| **RecordList** | Display records | Pagination, responsive table/cards, actions |
+| **CollectionManager** | Full CRUD interface | Combines form + list, handles all operations |
+
+**Shared Features:**
+- Same CSS styling system (CSS variables)
+- Same PocketBase utilities
+- Same field type support
+- Same responsive behavior
+
+---
+
+## Svelte Component Usage
+
+### Available Svelte Components
 
 ```javascript
-// Import all components
-import { LoginForm, SetupForm, CollectionManager, RecordList, DynamicForm } from 'pocketcrud';
+// Import all Svelte components
+import { LoginForm, SetupForm, CollectionManager, RecordList, DynamicForm } from 'pocketcrud/svelte';
 
 // Or import specific groups
-import { LoginForm, SetupForm } from 'pocketcrud/components/auth';
-import { CollectionManager } from 'pocketcrud/components/collections';
-import { RecordList, DynamicForm } from 'pocketcrud/components/records';
+import { LoginForm, SetupForm } from 'pocketcrud/svelte/auth';
+import { CollectionManager } from 'pocketcrud/svelte/collections';
+import { RecordList, DynamicForm } from 'pocketcrud/svelte/records';
 ```
 
 ### LoginForm Component
 
 ```html
 <script>
-  import { LoginForm } from 'pocketcrud';
+  import { LoginForm } from 'pocketcrud/svelte';
   import { goto } from '$app/navigation';
   import PocketCrud from 'pocketcrud';
 
@@ -178,7 +219,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
 
 ```html
 <script>
-  import { SetupForm } from 'pocketcrud';
+  import { SetupForm } from 'pocketcrud/svelte';
   import { goto } from '$app/navigation';
   import PocketCrud from 'pocketcrud';
 
@@ -235,7 +276,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
 
 ```html
 <script>
-  import { CollectionManager } from 'pocketcrud';
+  import { CollectionManager } from 'pocketcrud/svelte';
   import PocketCrud from 'pocketcrud';
 
   export let collectionName;
@@ -259,7 +300,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
 
 ```html
 <script>
-  import { RecordList } from 'pocketcrud';
+  import { RecordList } from 'pocketcrud/svelte';
 
   export let records;
   export let schema;
@@ -306,7 +347,7 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
 
 ```html
 <script>
-  import { DynamicForm } from 'pocketcrud';
+  import { DynamicForm } from 'pocketcrud/svelte';
 
   export let schema;
   export let initialData = null;
@@ -340,6 +381,10 @@ import { RecordList, DynamicForm } from 'pocketcrud/components/records';
 All components support slots for customization:
 
 ```html
+<script>
+  import { LoginForm } from 'pocketcrud/svelte';
+</script>
+
 <LoginForm on:submit="{handleLogin}">
   <div slot="email-input">
     <!-- Custom email input using your UI library -->
@@ -363,7 +408,7 @@ All components support slots for customization:
 For better organization, create a `pocketcrud.config.js` file in your admin routes directory:
 
 ```javascript
-// pocketcrud.config.js
+// routes/admin/pocketcrud.config.js
 export const fieldOverrides = {
   posts: {
     body: { type: 'textarea', rows: 8 },
@@ -402,7 +447,7 @@ Then use in your components:
 ```html
 <!-- routes/admin/[slug]/+page.svelte -->
 <script>
-  import { CollectionManager } from 'pocketcrud';
+  import { CollectionManager } from 'pocketcrud/svelte';
   import { getFieldOverrides, getPrimaryDisplayField } from '../pocketcrud.config.js';
 
   export let collectionName;
@@ -509,10 +554,31 @@ bun run test:integration:ui
 
 ### Building
 
+The package uses a TypeScript build pipeline that:
+1. Compiles TypeScript React components to JavaScript
+2. Resolves path aliases to relative imports
+3. Copies Svelte components and CSS to dist/
+
 ```bash
-bun run build     # Build TypeScript
-bun run dev       # Watch mode
-bun run typecheck # Type checking only
+bun run build         # Full build (clean + tsc + alias resolution + copy)
+bun run build:tsc     # TypeScript compilation only
+bun run build:resolve # Resolve path aliases
+bun run build:copy    # Copy Svelte/CSS files
+```
+
+### Local Development
+
+For local package development and testing:
+
+```bash
+# Build the package
+bun run build
+
+# Link locally for testing in your projects
+yalc publish
+
+# In your test project
+yalc add pocketcrud
 ```
 
 ### Linting
@@ -589,20 +655,33 @@ Each component has a unique class for targeted styling:
 - `.pocketcrud-record-list` - Record list wrapper
 - `.pocketcrud-dynamic-form` - Dynamic form wrapper
 
-### Import Base Styles (Optional)
+### Import Base Styles
 
-PocketCrud provides optional base CSS with all the variables defined:
+PocketCrud components require the base CSS file. The styles are shared between both Svelte and React components:
 
 ```javascript
 // In your app's layout or main component
 import 'pocketcrud/styles';
 ```
 
+**For Next.js App Router:**
+```tsx
+// app/layout.tsx
+import 'pocketcrud/styles';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
 **Note:** The base styles use sensible defaults with Tailwind-like colors. You can either:
 
 1. Import the base styles and override variables
-2. Skip the import and style components using only CSS variables
-3. Use the component class names to completely override styles
+2. Use the component class names to completely override styles
 
 ### Customization Example
 
@@ -639,47 +718,75 @@ app/
 
 ## Architecture
 
-### Component Structure
+### Package Structure
+
+PocketCrud is built with TypeScript and includes both Svelte and React components:
 
 ```
 pocketcrud/
-├── src/
+├── src/                      # Source files
 │   ├── utils/
 │   │   ├── crud.js           # PocketCrud class for database operations
 │   │   ├── form-utils.js     # Form field generation and validation
-│   │   └── index.js          # Utility exports
+│   │   └── index.d.ts        # TypeScript definitions
 │   ├── components/
-│   │   └── svelte/
-│   │       ├── Auth/
-│   │       │   ├── LoginForm.svelte
-│   │       │   ├── SetupForm.svelte
-│   │       │   └── index.js
-│   │       ├── Collections/
-│   │       │   ├── CollectionManager.svelte
-│   │       │   └── index.js
-│   │       └── Records/
-│   │           ├── RecordList.svelte
-│   │           ├── DynamicForm.svelte
-│   │           └── index.js
+│   │   ├── svelte/           # Svelte components
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginForm.svelte
+│   │   │   │   └── SetupForm.svelte
+│   │   │   ├── Collections/
+│   │   │   │   └── CollectionManager.svelte
+│   │   │   └── Records/
+│   │   │       ├── RecordList.svelte
+│   │   │       └── DynamicForm.svelte
+│   │   ├── react/            # React components (TypeScript)
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginForm.tsx
+│   │   │   │   └── SetupForm.tsx
+│   │   │   ├── Collections/
+│   │   │   │   └── CollectionManager.tsx
+│   │   │   └── Records/
+│   │   │       ├── RecordList.tsx
+│   │   │       └── DynamicForm.tsx
+│   │   └── styles/           # Shared CSS for all components
+│   │       └── pocketcrud.css
 │   └── index.js              # Main package entry
+├── dist/                     # Built files (published to npm)
+│   ├── utils/                # Compiled utilities
+│   ├── components/
+│   │   ├── svelte/           # Svelte components (copied as-is)
+│   │   ├── react/            # Compiled React components (.js + .d.ts)
+│   │   └── styles/           # Shared CSS
+│   └── index.js
+└── demo/                     # Demo apps (not published to npm)
 ```
+
+**Published to npm:**
+- `dist/` directory only (built files)
+- Svelte components (source files)
+- React components (compiled JavaScript + TypeScript definitions)
+- Shared CSS and utilities
 
 ### Design Principles
 
 1. **Utilities are framework-agnostic** - Use CRUD utilities in any JavaScript project
-2. **Components are standalone** - No hard-coded dependencies on UI libraries or app-specific logic
-3. **Event-driven architecture** - Components emit events, apps handle business logic
-4. **Customizable via props and slots** - Override defaults without forking code
-5. **Config over code** - Pass configuration objects instead of modifying source
+2. **Multi-framework support** - Same functionality in both Svelte and React
+3. **Shared styling system** - CSS variables work across all components
+4. **Components are standalone** - No hard-coded dependencies on UI libraries or app-specific logic
+5. **Event-driven architecture** - Components emit events (Svelte) or use callbacks (React)
+6. **Customizable via props and slots** - Override defaults without forking code
+7. **Config over code** - Pass configuration objects instead of modifying source
+8. **TypeScript support** - Full type definitions for React components and utilities
 
 ## Real-World Usage
 
-This package provides everything you need to build a complete admin interface:
+This package provides everything you need to build a complete admin interface in either Svelte or React:
 
 - **Admin interface**: Collection browser and navigation
 - **Collection management**: Dynamic CRUD for any PocketBase collection
 - **Form generation**: Automatic forms for all field types
-- **Component integration**: Flexible integration with any UI library via slots
+- **Framework flexibility**: Choose Svelte or React based on your project
+- **Shared utilities**: Framework-agnostic utilities work anywhere
 
 ## Contributing
 
@@ -694,9 +801,285 @@ This package provides everything you need to build a complete admin interface:
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
+---
+
+## React Component Usage
+
+All Svelte components have been ported to React with identical functionality and React-friendly APIs (callbacks instead of events, controlled components).
+
+### Available React Components
+
+```typescript
+// Import all React components
+import { LoginForm, SetupForm, CollectionManager, RecordList, DynamicForm } from 'pocketcrud/react';
+
+// Or import specific groups
+import { LoginForm, SetupForm } from 'pocketcrud/react/auth';
+import { CollectionManager } from 'pocketcrud/react/collections';
+import { RecordList, DynamicForm } from 'pocketcrud/react/records';
+```
+
+### LoginForm Component (React)
+
+```tsx
+'use client'; // For Next.js App Router
+
+import { LoginForm } from 'pocketcrud/react';
+import { useRouter } from 'next/navigation';
+import PocketCrud from 'pocketcrud';
+import { useState } from 'react';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleLogin(data: { email: string; password: string }) {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      await crud.client.collection('users').authWithPassword(data.email, data.password);
+      router.push('/admin');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <LoginForm
+      email={email}
+      password={password}
+      isLoading={isLoading}
+      error={error}
+      onEmailChange={setEmail}
+      onPasswordChange={setPassword}
+      onSubmit={handleLogin}
+    />
+  );
+}
+```
+
+### SetupForm Component (React)
+
+```tsx
+'use client';
+
+import { SetupForm } from 'pocketcrud/react';
+import { useRouter } from 'next/navigation';
+import PocketCrud from 'pocketcrud';
+import { useState } from 'react';
+
+export default function SetupPage() {
+  const router = useRouter();
+  const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  async function handleSetup(data: { email: string; password: string; passwordConfirm: string }) {
+    if (data.password !== data.passwordConfirm) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (data.password.length < 10) {
+      setError('Password must be at least 10 characters');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      await crud.createAdmin(data.email, data.password);
+      setSuccess('Admin user created successfully!');
+      setTimeout(() => router.push('/admin/login'), 2000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <SetupForm
+      email={email}
+      password={password}
+      passwordConfirm={passwordConfirm}
+      isLoading={isLoading}
+      error={error}
+      success={success}
+      onEmailChange={setEmail}
+      onPasswordChange={setPassword}
+      onPasswordConfirmChange={setPasswordConfirm}
+      onSubmit={handleSetup}
+    />
+  );
+}
+```
+
+### CollectionManager Component (React)
+
+```tsx
+'use client';
+
+import { CollectionManager } from 'pocketcrud/react';
+import PocketCrud from 'pocketcrud';
+
+interface CollectionPageProps {
+  params: { slug: string };
+}
+
+export default function CollectionPage({ params }: CollectionPageProps) {
+  const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+  // Optional: Configure field overrides
+  const fieldOverrides = {
+    body: { type: 'textarea', rows: 8 },
+    content: { type: 'textarea', rows: 6 },
+  };
+
+  return (
+    <CollectionManager
+      crud={crud}
+      collectionName={params.slug}
+      fieldOverrides={fieldOverrides}
+      primaryDisplayField="title"
+      perPage={20}
+    />
+  );
+}
+```
+
+### RecordList Component (React)
+
+```tsx
+'use client';
+
+import { RecordList } from 'pocketcrud/react';
+
+export default function MyRecordList({ records, schema }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10;
+  const totalItems = 100;
+  const perPage = 20;
+
+  function handleEdit(record) {
+    console.log('Edit record:', record);
+  }
+
+  function handleDelete(record) {
+    if (confirm('Delete this record?')) {
+      console.log('Delete record:', record);
+    }
+  }
+
+  function handlePageChange(page) {
+    setCurrentPage(page);
+    // Fetch new page of records
+  }
+
+  return (
+    <RecordList
+      records={records}
+      schema={schema}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      totalItems={totalItems}
+      perPage={perPage}
+      primaryDisplayField="title"
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+      onPageChange={handlePageChange}
+    />
+  );
+}
+```
+
+### DynamicForm Component (React)
+
+```tsx
+'use client';
+
+import { DynamicForm } from 'pocketcrud/react';
+
+export default function MyForm({ schema, initialData }) {
+  const fieldOverrides = {
+    body: { type: 'textarea', rows: 8 },
+  };
+
+  function handleSubmit(formData) {
+    console.log('Form submitted:', formData);
+    // Save to PocketBase
+  }
+
+  function handleCancel() {
+    console.log('Form cancelled');
+  }
+
+  return (
+    <DynamicForm
+      schema={schema}
+      initialData={initialData}
+      fieldOverrides={fieldOverrides}
+      onSubmit={handleSubmit}
+      onCancel={handleCancel}
+    />
+  );
+}
+```
+
+### Next.js App Router Integration
+
+For Next.js 13+ App Router, all React components include the `'use client'` directive and work seamlessly:
+
+```typescript
+// app/admin/[slug]/page.tsx
+'use client';
+
+import { CollectionManager } from 'pocketcrud/react';
+import PocketCrud from 'pocketcrud';
+
+export default function AdminCollectionPage({ params }: { params: { slug: string } }) {
+  const crud = new PocketCrud({ url: process.env.NEXT_PUBLIC_POCKETBASE_URL });
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Manage {params.slug}</h1>
+      <CollectionManager crud={crud} collectionName={params.slug} />
+    </div>
+  );
+}
+```
+
+### Key Differences from Svelte Components
+
+While functionality is identical, the APIs differ to match each framework's patterns:
+
+| Feature | Svelte | React |
+|---------|--------|-------|
+| **Events** | Event dispatchers (`on:submit`) | Callback props (`onSubmit`) |
+| **Data Binding** | Two-way binding (`bind:value`) | Controlled components (`value` + `onChange`) |
+| **Customization** | Slots | Render props / children |
+| **Styling** | Same CSS variables | Same CSS variables |
+
+Both use the same `pocketcrud/styles` CSS file.
+
 ## Roadmap
 
-- [ ] React/Next.js components (port existing Svelte components to React)
+- [x] React/Next.js components (port existing Svelte components to React) ✅ **COMPLETED**
 - [ ] Advanced field types (rich text, file relationships)
 - [ ] Advanced filtering and search
 - [ ] Custom field renderers
