@@ -1,6 +1,6 @@
 {
   "name": "pocketcrud",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A lightweight, framework-agnostic library for simplified PocketBase CRUD operations with ready-to-use UI components",
   "main": "dist/index.js",
   "module": "dist/index.js",
