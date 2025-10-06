@@ -30,6 +30,12 @@
 
 - None! This is a fully backward-compatible addition
 
+## 0.1.1
+
+### Patch Changes
+
+- 4e552c5: Added development tooling (ESLint, Prettier, Vitest configs), removed private repo references, and set up GitHub Actions for automated releases
+
 ## 0.1.0
 
 ### Minor Changes
