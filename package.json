@@ -2,9 +2,9 @@
   "name": "pocketcrud",
   "version": "0.1.0",
   "description": "A lightweight, framework-agnostic library for simplified PocketBase CRUD operations with ready-to-use UI components",
-  "main": "src/index.js",
-  "module": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "repository": {
     "type": "git",
@@ -16,44 +16,69 @@
   },
   "exports": {
     ".": {
-      "types": "./src/index.d.ts",
-      "default": "./src/index.js"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "./components": {
-      "default": "./src/components/svelte/index.js"
+    "./svelte": {
+      "default": "./dist/components/svelte/index.js"
     },
-    "./components/auth": {
-      "default": "./src/components/svelte/Auth/index.js"
+    "./svelte/auth": {
+      "default": "./dist/components/svelte/Auth/index.js"
     },
-    "./components/collections": {
-      "default": "./src/components/svelte/Collections/index.js"
+    "./svelte/collections": {
+      "default": "./dist/components/svelte/Collections/index.js"
     },
-    "./components/records": {
-      "default": "./src/components/svelte/Records/index.js"
+    "./svelte/records": {
+      "default": "./dist/components/svelte/Records/index.js"
+    },
+    "./react": {
+      "types": "./dist/components/react/index.d.ts",
+      "default": "./dist/components/react/index.js"
+    },
+    "./react/auth": {
+      "types": "./dist/components/react/Auth/index.d.ts",
+      "default": "./dist/components/react/Auth/index.js"
+    },
+    "./react/collections": {
+      "types": "./dist/components/react/Collections/index.d.ts",
+      "default": "./dist/components/react/Collections/index.js"
+    },
+    "./react/records": {
+      "types": "./dist/components/react/Records/index.d.ts",
+      "default": "./dist/components/react/Records/index.js"
     },
     "./styles": {
-      "default": "./src/components/svelte/pocketcrud.css"
+      "default": "./dist/components/styles/pocketcrud.css"
     }
   },
   "scripts": {
-    "build": "echo 'No build needed - using JS directly'",
-    "dev": "echo 'No dev build needed - using JS directly'",
+    "build": "bun run build:clean && bun run build:tsc && bun run build:resolve && bun run build:copy",
+    "build:clean": "rm -rf dist",
+    "build:tsc": "tsc",
+    "build:resolve": "tsc-alias -p tsconfig.json",
+    "build:copy": "cp -r src/components/svelte dist/components/ && cp -r src/components/styles dist/components/",
+    "dev": "tsc --watch",
+    "dev:yalc": "bun run yalc:publish && bun run dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "bunx eslint src --ext .js --ignore-pattern '*.d.ts'",
-    "lint:fix": "bunx eslint src --ext .js --ignore-pattern '*.d.ts' --fix",
+    "lint": "bunx eslint src --ext .js,.ts,.tsx --ignore-pattern '*.d.ts'",
+    "lint:fix": "bunx eslint src --ext .js,.ts,.tsx --ignore-pattern '*.d.ts' --fix",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
+    "prepublishOnly": "bun run build",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
-    "yalc:publish": "yalc publish --push"
+    "yalc:publish": "bun run build && yalc publish --push --no-scripts",
+    "yalc:link": "yalc link",
+    "yalc:unlink": "yalc installations clean pocketcrud"
   },
   "keywords": [
     "pocketbase",
     "crud",
     "svelte",
+    "react",
     "components",
     "database",
     "cms"
@@ -61,7 +86,7 @@
   "author": "Jack Keller",
   "license": "MIT",
   "files": [
-    "src/",
+    "dist/",
     "README.md",
     "LICENSE"
   ],
@@ -69,10 +94,18 @@
     "pocketbase": "^0.21.0"
   },
   "peerDependencies": {
-    "svelte": "^4.0.0 || ^5.0.0"
+    "svelte": "^4.0.0 || ^5.0.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "svelte": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
       "optional": true
     }
   },
@@ -80,11 +113,15 @@
     "@changesets/cli": "^2.29.6",
     "@eslint/js": "^9.34.0",
     "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
     "@vitest/ui": "^1.0.0",
     "eslint": "^9.34.0",
+    "jsdom": "^27.0.0",
     "prettier": "^3.6.2",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0",
     "yalc": "^1.0.0-pre.53"
