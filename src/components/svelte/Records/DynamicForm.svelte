@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { getFormFields, validateFormData, prepareFormData, formatDateForInput } from '../../../utils/form-utils.js';
-  import '../pocketcrud.css';
+  import '../../styles/pocketcrud.css';
 
   /** @typedef {import('pocketcrud').FieldOverrides} FieldOverrides */
 

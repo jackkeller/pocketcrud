@@ -1,7 +1,7 @@
 <script>
   import DynamicForm from "../Records/DynamicForm.svelte";
   import RecordList from "../Records/RecordList.svelte";
-  import "../pocketcrud.css";
+  import "../../styles/pocketcrud.css";
 
   /** @type {import('pocketcrud').default} */
   export let crud;
