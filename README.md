@@ -158,6 +158,7 @@ All five core components are available in both libraries:
 | **DynamicForm** | Schema-driven forms | Auto-generated fields, validation, all field types |
 | **RecordList** | Display records | Pagination, responsive table/cards, actions |
 | **CollectionManager** | Full CRUD interface | Combines form + list, handles all operations |
+| **RelatedCollectionManager** | Inline child collection CRUD | Manage related records within a parent record edit form |
 
 **Shared Features:**
 - Same CSS styling system (CSS variables)
@@ -173,7 +174,7 @@ All five core components are available in both libraries:
 
 ```javascript
 // Import all Svelte components
-import { LoginForm, SetupForm, CollectionManager, RecordList, DynamicForm } from 'pocketcrud/svelte';
+import { LoginForm, SetupForm, CollectionManager, RelatedCollectionManager, RecordList, DynamicForm } from 'pocketcrud/svelte';
 
 // Or import specific groups
 import { LoginForm, SetupForm } from 'pocketcrud/svelte/auth';
@@ -294,6 +295,52 @@ import { RecordList, DynamicForm } from 'pocketcrud/svelte/records';
 </script>
 
 <CollectionManager {crud} {collectionName} {fieldOverrides} {primaryDisplayField} perPage="{20}" />
+```
+
+### RelatedCollectionManager Component
+
+Use `relatedCollections` on `CollectionManager` to manage child records inline when editing a parent. For example, if `recipe_steps` has a required `recipe` relation field pointing to a `recipes` collection:
+
+```html
+<script>
+  import { CollectionManager } from 'pocketcrud/svelte';
+  import PocketCrud from 'pocketcrud';
+
+  const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+  const relatedCollections = [
+    {
+      collectionName: 'recipe_steps', // child collection name
+      relationField: 'recipe',        // field in recipe_steps that points to recipes
+      label: 'Steps',                 // display label (defaults to collectionName)
+      primaryDisplayField: 'title',   // optional: field to highlight in the list
+      perPage: 10,                    // optional: defaults to 10
+    },
+  ];
+</script>
+
+<CollectionManager {crud} collectionName="recipes" {relatedCollections} />
+```
+
+The related collection panel appears **inside the edit form** for an existing parent record. It shows a filtered list of child records (only those linked to the current parent) and provides its own create/edit/delete controls. The relation field is hidden and automatically set when creating new child records.
+
+You can also use `RelatedCollectionManager` directly if you need it outside of a `CollectionManager`:
+
+```html
+<script>
+  import { RelatedCollectionManager } from 'pocketcrud/svelte/collections';
+  import PocketCrud from 'pocketcrud';
+
+  const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+  const config = {
+    collectionName: 'recipe_steps',
+    relationField: 'recipe',
+    label: 'Steps',
+  };
+</script>
+
+<RelatedCollectionManager {crud} {config} parentRecordId="PARENT_RECORD_ID" />
 ```
 
 ### RecordList Component
@@ -735,7 +782,8 @@ pocketcrud/
 │   │   │   │   ├── LoginForm.svelte
 │   │   │   │   └── SetupForm.svelte
 │   │   │   ├── Collections/
-│   │   │   │   └── CollectionManager.svelte
+│   │   │   │   ├── CollectionManager.svelte
+│   │   │   │   └── RelatedCollectionManager.svelte
 │   │   │   └── Records/
 │   │   │       ├── RecordList.svelte
 │   │   │       └── DynamicForm.svelte
@@ -744,7 +792,8 @@ pocketcrud/
 │   │   │   │   ├── LoginForm.tsx
 │   │   │   │   └── SetupForm.tsx
 │   │   │   ├── Collections/
-│   │   │   │   └── CollectionManager.tsx
+│   │   │   │   ├── CollectionManager.tsx
+│   │   │   │   └── RelatedCollectionManager.tsx
 │   │   │   └── Records/
 │   │   │       ├── RecordList.tsx
 │   │   │       └── DynamicForm.tsx
@@ -811,7 +860,7 @@ All Svelte components have been ported to React with identical functionality and
 
 ```typescript
 // Import all React components
-import { LoginForm, SetupForm, CollectionManager, RecordList, DynamicForm } from 'pocketcrud/react';
+import { LoginForm, SetupForm, CollectionManager, RelatedCollectionManager, RecordList, DynamicForm } from 'pocketcrud/react';
 
 // Or import specific groups
 import { LoginForm, SetupForm } from 'pocketcrud/react/auth';
@@ -963,6 +1012,63 @@ export default function CollectionPage({ params }: CollectionPageProps) {
 }
 ```
 
+### RelatedCollectionManager Component (React)
+
+Use `relatedCollections` on `CollectionManager` to manage child records inline when editing a parent. For example, if `recipe_steps` has a required `recipe` relation field pointing to a `recipes` collection:
+
+```tsx
+'use client';
+
+import { CollectionManager } from 'pocketcrud/react';
+import type { RelatedCollectionConfig } from 'pocketcrud/react/collections';
+import PocketCrud from 'pocketcrud';
+
+const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+const relatedCollections: RelatedCollectionConfig[] = [
+  {
+    collectionName: 'recipe_steps', // child collection name
+    relationField: 'recipe',        // field in recipe_steps that points to recipes
+    label: 'Steps',                 // display label (defaults to collectionName)
+    primaryDisplayField: 'title',   // optional: field to highlight in the list
+    perPage: 10,                    // optional: defaults to 10
+  },
+];
+
+export default function RecipesPage() {
+  return (
+    <CollectionManager
+      crud={crud}
+      collectionName="recipes"
+      relatedCollections={relatedCollections}
+    />
+  );
+}
+```
+
+The related collection panel appears **inside the edit form** for an existing parent record. It shows a filtered list of child records (only those linked to the current parent) and provides its own create/edit/delete controls. The relation field is hidden and automatically set when creating new child records.
+
+You can also use `RelatedCollectionManager` directly if you need it outside of a `CollectionManager`:
+
+```tsx
+'use client';
+
+import { RelatedCollectionManager } from 'pocketcrud/react/collections';
+import PocketCrud from 'pocketcrud';
+
+const crud = new PocketCrud({ url: 'https://your-pb-url.com' });
+
+export default function RecipeSteps({ recipeId }: { recipeId: string }) {
+  return (
+    <RelatedCollectionManager
+      crud={crud}
+      config={{ collectionName: 'recipe_steps', relationField: 'recipe', label: 'Steps' }}
+      parentRecordId={recipeId}
+    />
+  );
+}
+```
+
 ### RecordList Component (React)
 
 ```tsx
@@ -1080,6 +1186,7 @@ Both use the same `pocketcrud/styles` CSS file.
 ## Roadmap
 
 - [x] React/Next.js components (port existing Svelte components to React) ✅ **COMPLETED**
+- [x] Related/child collection editing inline within parent record forms ✅ **COMPLETED**
 - [ ] Advanced field types (rich text, file relationships)
 - [ ] Advanced filtering and search
 - [ ] Custom field renderers
