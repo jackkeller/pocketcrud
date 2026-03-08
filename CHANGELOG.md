@@ -1,5 +1,11 @@
 # pocketcrud
 
+## 0.3.0
+
+### Minor Changes
+
+- 3b3d9c2: adds related collections component
+
 ## 0.2.0
 
 ### Minor Changes
