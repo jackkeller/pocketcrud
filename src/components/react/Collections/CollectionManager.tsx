@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import DynamicForm from '../Records/DynamicForm';
 import RecordList from '../Records/RecordList';
+import RelatedCollectionManager from './RelatedCollectionManager';
+import type { RelatedCollectionConfig } from './RelatedCollectionManager';
 import type PocketCrud from '@utils/crud.js';
 import type { CollectionField, FieldOverrides } from '@utils/form-utils.js';
 import '../../styles/pocketcrud.css';
@@ -13,6 +15,7 @@ export interface CollectionManagerProps {
   fieldOverrides?: FieldOverrides;
   primaryDisplayField?: string;
   perPage?: number;
+  relatedCollections?: RelatedCollectionConfig[];
   loadingSlot?: React.ReactNode;
   errorSlot?: (error: string) => React.ReactNode;
   createButtonSlot?: (handleCreateNew: () => void) => React.ReactNode;
@@ -43,6 +46,7 @@ export const CollectionManager: React.FC<CollectionManagerProps> = ({
   fieldOverrides = {},
   primaryDisplayField,
   perPage = 20,
+  relatedCollections = [],
   loadingSlot,
   errorSlot,
   createButtonSlot,
@@ -245,6 +249,18 @@ export const CollectionManager: React.FC<CollectionManagerProps> = ({
                 onSubmit={handleFormSubmit}
                 onCancel={handleFormCancel}
               />
+              {editingRecord && relatedCollections.length > 0 && (
+                <div className="mt-2">
+                  {relatedCollections.map((config) => (
+                    <RelatedCollectionManager
+                      key={config.collectionName}
+                      crud={crud}
+                      config={config}
+                      parentRecordId={editingRecord.id}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 

@@ -1,6 +1,7 @@
 <script>
   import DynamicForm from "../Records/DynamicForm.svelte";
   import RecordList from "../Records/RecordList.svelte";
+  import RelatedCollectionManager from "./RelatedCollectionManager.svelte";
   import "../../styles/pocketcrud.css";
 
   /** @type {import('pocketcrud').default} */
@@ -13,6 +14,17 @@
   export let primaryDisplayField = undefined;
   /** @type {number} */
   export let perPage = 20;
+  /**
+   * @type {Array<{
+   *   collectionName: string;
+   *   relationField: string;
+   *   label?: string;
+   *   fieldOverrides?: Record<string, Record<string, any>>;
+   *   primaryDisplayField?: string;
+   *   perPage?: number;
+   * }>}
+   */
+  export let relatedCollections = [];
 
   /** @type {Array<{id: string, name: string, type: string, system: boolean, required: boolean, presentable: boolean, unique?: boolean, options?: any}>} */
   let schema = [];
@@ -196,6 +208,17 @@
               on:submit={(e) => handleFormSubmit(e.detail)}
               on:cancel={handleFormCancel}
             />
+            {#if editingRecord && relatedCollections.length > 0}
+              <div class="mt-2">
+                {#each relatedCollections as relatedConfig (relatedConfig.collectionName)}
+                  <RelatedCollectionManager
+                    {crud}
+                    config={relatedConfig}
+                    parentRecordId={editingRecord.id}
+                  />
+                {/each}
+              </div>
+            {/if}
           </div>
         </slot>
       {/if}

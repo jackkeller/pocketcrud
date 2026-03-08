@@ -108,6 +108,15 @@ export interface FormFieldConfig {
 
 export type FieldOverrides = Record<string, Partial<FormFieldConfig>>;
 
+export interface RelatedCollectionConfig {
+  collectionName: string;
+  relationField: string;
+  label?: string;
+  fieldOverrides?: FieldOverrides;
+  primaryDisplayField?: string;
+  perPage?: number;
+}
+
 export declare function getFormFieldConfig(
   field: CollectionField,
   overrides?: FieldOverrides
