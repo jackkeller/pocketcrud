@@ -1,0 +1,5 @@
+---
+'pocketcrud': patch
+---
+
+documentation update
