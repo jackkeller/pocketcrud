@@ -1,5 +1,11 @@
 # pocketcrud
 
+## 0.3.1
+
+### Patch Changes
+
+- 6f2ba7f: documentation update
+
 ## 0.3.0
 
 ### Minor Changes
